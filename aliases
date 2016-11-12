@@ -4,6 +4,7 @@ alias ...="cd ../../"
 alias desk="cd /Users/tbrown/Desktop"
 alias sites="cd /Users/tbrown/Sites"
 alias docs="cd /Users/tbrown/Documents"
+alias dev="cd /Users/tbrown/Documents/Development"
 
 # Apache
 alias restartApache='sudo apachectl restart'
@@ -103,8 +104,10 @@ alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\: .*|GET
 alias trimcopy="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
-#alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
+alias cleanup="find . -name '*.DS_Store' -type f -ls -delete"
 
+# Recursively delete .DS_Store files
+alias cds="find . -name '*.DS_Store' -type f -ls -delete"
 # Shortcuts
 alias g="git"
 alias v="vim"
@@ -112,6 +115,8 @@ alias v="vim"
 # File size
 alias fs="stat -f \'%z bytes\'"
 alias cs="stat -c %s"
+# Create React App
+alias crapp='create-react-app'
 
 # ROT13-encode text. Works for decoding, too! ;)
 #alias rot13='tr a-zA-Z n-za-mN-ZA-M'
