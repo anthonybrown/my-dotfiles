@@ -245,13 +245,13 @@ nmap <c-l> <c-w>l
 nmap <c-v> :vertical resize +5<cr>
 nmap 25 :vertical resize 40<cr>
 nmap 75 :vertical resize 120<cr>
-nmap <c-b> :nerdtreetoggle<cr>
+nmap <c-b> :NERDTreeToggle<cr>
 nmap :sp :rightbelow sp<cr>
-nmap :bp :buffsurfback<cr>
-nmap :bn :buffsurfforward<cr>
+nmap :bp :Buffsurfback<cr>
+nmap :bn :Buffsurfforward<cr>
 highlight search cterm=underline
 " nerdtree show hidden files
-let nerdtreeshowhidden=1
+let NERDTreeShowHidden=1
 set statusline+=%#warningmsg#
 set statusline+=%{syntasiticstatuslineflag()}
 set statusline+=%*
