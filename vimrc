@@ -18,28 +18,28 @@ syntax on
 filetype off
 set rtp+=~/.vim/bundle/vundle.vim
 call vundle#begin()
-plugin 'vundlevim/vundle.vim'
-plugin 'tpope/vim-fugitive'
-plugin 'mxw/vim-jsx'
-plugin 'marcweber/vim-addon-mw-utils'
-plugin 'tomtom/tlib_vim'
-plugin 'garbas/vim-snipmate'
-plugin 'honza/vim-snippets'
-plugin 'pangloss/vim-javascript'
-plugin 'mustache/vim-mustache-handlebars'
-plugin 'jacoborus/tender'
-plugin 'chrisktenderempson/base16-vim'
-plugin 'scrooloose/nerdcommenter'
-plugin 'scrooloose/nerdtree'
-plugin 'xuyuanp/nerdtree-git-plugin'
-plugin 'vim-airline/vim-airline'
-plugin 'vim-airline/vim-airline-themes'
-plugin 'whatyouhide/vim-gotham'
-plugin 'mattn/emmet-vim'
-plugin 'flazz/vim-colorschemes'
-bundle 'justinj/vim-react-snippets'
-bundle 'cakebaker/scss-syntax.vim'
-bundle 'moll/vim-node'
+Plugin 'vundlevim/vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'mxw/vim-jsx'
+Plugin 'marcweber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'jacoborus/tender'
+Plugin 'chrisktenderempson/base16-vim'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'xuyuanp/nerdtree-git-plugin'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'whatyouhide/vim-gotham'
+Plugin 'mattn/emmet-vim'
+Plugin 'flazz/vim-colorschemes'
+Bundle 'justinj/vim-react-snippets'
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'moll/vim-node'
 call vundle#end()
 filetype plugin indent on
 set t_co=256
@@ -59,7 +59,7 @@ let g:solarized_termcolors=256
 " colorscheme srcery
 " colorscheme gotham256
 " colorscheme solarized
-colorscheme oceanicnext
+colorscheme OceanicNext
 " set fonts
 set guifont=menlo\ for\ powerline:h22
 set guioptions-=t
@@ -72,7 +72,7 @@ if has ("gui_running")
   set background=dark
   " colorscheme gotham
   "colorscheme srcery
-  colorscheme oceanicnext
+  colorscheme OceanicNext
   "colorscheme gruvbox
   "colorscheme railscast
   "colorscheme base16-default
@@ -116,7 +116,7 @@ set virtualedit=block
 set runtimepath^=~/.vim/bundle/node
 set filetype=javascript.jsx
 let g:mustache_abbreviations = 1
-command! h let @/=" "
+command! H let @/=" "
 fun! <sid>striptrailingwhitespaces()
   let l = line('.')
   let c = col('.')
@@ -175,26 +175,6 @@ set expandtab
 
 " display extra whitespace
 set list listchars=tab:»·,trail:·,nbsp:·
-
-" use one space, not two, after punctuation.
-set nojoinspaces
-
-" use the silver searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " use ag in ctrlp for listing files. lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag -q -l --nocolor --hidden -g "" %s'
-
-  " ag is fast enough that ctrlp doesn't need to cache
-  let g:ctrlp_use_caching = 0
-
-  if !exists(":ag")
-    command -nargs=+ -complete=file -bar ag silent! grep! <args>|cwindow|redraw!
-    nnoremap \ :ag<space>
-  endif
-endif
 
 " make it obvious where 80 characters is
 set textwidth=90
