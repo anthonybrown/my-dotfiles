@@ -13,7 +13,10 @@ if (has("termguicolors"))
  set termguicolors
 endif
 
-set nocompatible
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1
+endif
+
 syntax on
 filetype off
 set rtp+=~/.vim/bundle/vundle.vim
@@ -42,6 +45,7 @@ Bundle 'cakebaker/scss-syntax.vim'
 Bundle 'moll/vim-node'
 call vundle#end()
 filetype plugin indent on
+set nocompatible
 set t_co=256
 set background=dark
 set ff=unix
@@ -116,6 +120,7 @@ set virtualedit=block
 set runtimepath^=~/.vim/bundle/node
 set filetype=javascript.jsx
 let g:mustache_abbreviations = 1
+let jshint2_save = 1
 command! H let @/=" "
 fun! <sid>striptrailingwhitespaces()
   let l = line('.')
@@ -123,49 +128,20 @@ fun! <sid>striptrailingwhitespaces()
   %s/\s\+$//e
   call cursor(l,c)
 endfun
-autocmd bufwritepre * :call <sid>striptrailingwhitespaces()
-autocmd filetype c,cpp,java,php,js,html autocmd bufwritepre <buffer> :%s/\s\+$//e
-autocmd bufwritepre *.html :%s/\s\+$//e
-au bufnewfile,bufread *.ejs set filetype=html
-au bufread,bufnewfile *.scss set filetype=scss.css
-autocmd bufnewfile,bufreadpre *.js let b:syntastic_checkers = ['eslint']
-" switch syntax highlighting on, when the terminal has colors
-" also switch on highlighting the last used search pattern.
-"if (&t_co > 2 || has("gui_running")) && !exists("syntax_on")
-"  syntax on
-"endif
-
-if filereadable(expand('~/.vimrc.bundles'))
-  source ~/.vimrc.bundles
-endif
-
-" load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
+autocmd BufWritePre * :call <sid>striptrailingwhitespaces()
+autocmd FileType c,cpp,java,php,js,html autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd BufWritePre *.html :%s/\s\+$//e
+au BufNewFile,BufRead *.ejs set filetype=html
+au BufRead,BufNewFile *.scss set filetype=scss.css
+autocmd BufNewFile,BufReadPre *.js let b:syntastic_checkers = ['eslint']
+"autocmd FileType html,css,javascript.jsx EmmetInstall
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  },
+\}
 
 filetype plugin indent on
-
-augroup vimrcex
-  autocmd!
-
-  " when editing a file, always jump to the last known cursor position.
-  " don't do it for commit messages, when the position is invalid, or when
-  " inside an event handler (happens when dropping a file on gvim).
-  autocmd bufreadpost *
-    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-
-  " set syntax highlighting for specific file types
-  autocmd bufread,bufnewfile appraisals set filetype=ruby
-  autocmd bufread,bufnewfile *.md set filetype=markdown
-  autocmd bufread,bufnewfile .{jscs,jshint,eslint}rc set filetype=json
-augroup end
-
-" when the type of shell script is /bin/sh, assume a posix-compatible
-" shell for syntax highlighting purposes.
-let g:is_posix = 1
 
 " softtabs, 2 spaces
 set tabstop=2
@@ -174,7 +150,7 @@ set shiftround
 set expandtab
 
 " display extra whitespace
-set list listchars=tab:»·,trail:·,nbsp:·
+"set list listchars=tab:»·,trail:·,nbsp:·
 
 " make it obvious where 80 characters is
 set textwidth=90
@@ -183,36 +159,6 @@ set colorcolumn=+1
 " numbers
 set number
 set numberwidth=5
-
-
-" get off my lawn
-nnoremap <left> :echoe "use h"<cr>
-nnoremap <right> :echoe "use l"<cr>
-nnoremap <up> :echoe "use k"<cr>
-nnoremap <down> :echoe "use j"<cr>
-
-
-" treat <li> and <p> tags like the block tags they are
-let g:html_indent_tags = 'li\|p'
-
-" open new split panes to right and bottom, which feels more natural
-set splitbelow
-set splitright
-
-" quicker window movement
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-
-" configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-let g:syntastic_eruby_ruby_quiet_messages =
-    \ {"regex": "possibly useless use of a variable in void context"}
-
-" set spellfile to location that is guaranteed to exist, can be symlinked to
-" dropbox or kept in git and managed outside of thoughtbot/dotfiles using rcm.
 set spellfile=$home/.vim-spell-en.utf-8.add
 set spell
 
@@ -221,12 +167,6 @@ set complete+=kspell
 
 " always use vertical diffs
 set diffopt+=vertical
-
-" local config
-if filereadable($home . "/.vimrc.local")
-  source ~/.vimrc.local
-endif
-
 " airline configuration
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -238,14 +178,14 @@ let g:mapleader = ','
 nmap <leader>w :w!<cr>
 nnoremap j gj
 nnoremap k gk
-nmap <c-h> <c-w>h
-nmap <c-j> <c-w>j
-nmap <c-k> <c-w>k
-nmap <c-l> <c-w>l
-nmap <c-v> :vertical resize +5<cr>
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+nmap <C-v> :vertical resize +5<cr>
 nmap 25 :vertical resize 40<cr>
 nmap 75 :vertical resize 120<cr>
-nmap <c-b> :NERDTreeToggle<cr>
+nmap <C-b> :NERDTreeToggle<cr>
 nmap :sp :rightbelow sp<cr>
 nmap :bp :Buffsurfback<cr>
 nmap :bn :Buffsurfforward<cr>
@@ -259,5 +199,6 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_lock_list=1
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
-let g:syntastic_javascript_checkers = ['eslint', 'standard']
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['standard']
 let g:jsx_ext_required=0
